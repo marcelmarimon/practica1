@@ -1,5 +1,5 @@
 ---
-title: "practica1"
+title: "Práctica1"
 output: html_document
 date: "2024-12-16"
 ---
@@ -9,6 +9,41 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## R Markdown
+## ACTIVIDAD EVALUABLE 1
+17 de diciembre de 2024
+UPC
+Data Driven Security
+Marcel Marimon i Maria Parera
+## Clasificación de preguntas
+
+A continuación, se clasifican las preguntas como descriptiva, exploratoria, inferencial, predictiva o causal, con una breve justificación:
+
+### **1. Vehículos en una autopista**
+**Clasificación:** Esta pregunta se clasifica como "descriptiva".
+**Justificación:** En la pregunta se lleva a cabo el análisis de las características básicas del conjunto de datos, como la cantidad total, frecuencias y países más comunes. Es un análisis que simplemente describe los datos existentes sin buscar relaciones complejas.
+
+---
+
+### **2. Preferencias de género literario según rango de edad**
+**Clasificación:** Esta pregunta se clasifica como "exploratoria".
+**Justificación:** La pregunta en cuestión busca encontrar relaciones entre variables (género de película y rango de edad). Es una pregunta que explora patrones y tendencias en los datos.
+
+---
+
+### **3. Peticiones incorrectas de una red de telefonía**
+**Clasificación:** Esta pregunta se clasifica como "predictiva".  
+**Justificación:** El objetivo de esta pregunta pretende predecir si las peticiones futuras de una red específica seguirán siendo problemáticas, basándose en un patrón observado en el pasado.
+
+---
+
+### **4. Agrupación de usuarios por historial de compras**
+**Clasificación:** Esta pregunta se clasifica como "predictiva".
+**Justificación:** La pregunta en cuestión trata de clasificar usuarios en grupos basándose en su historial de compras, lo que implica un modelo predictivo de asignación.
+
+---
+
+## Conclusión
+En esta sección hemos clasificado cada pregunta en su categoría correspondiente y explicado brevemente la razón de cada clasificación.
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
