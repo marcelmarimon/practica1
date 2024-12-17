@@ -2,56 +2,152 @@
 title: "Práctica1"
 output: html_document
 date: "2024-12-16"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-## ACTIVIDAD EVALUABLE 1
+# ACTIVIDAD EVALUABLE 1
+
 17 de diciembre de 2024
-UPC
-Data Driven Security
-Marcel Marimon i Maria Parera
-## Clasificación de preguntas
 
-A continuación, se clasifican las preguntas como descriptiva, exploratoria, inferencial, predictiva o causal, con una breve justificación:
+Data Driven Security (UPC)
 
-### **1. Vehículos en una autopista**
+Marcel Marimon, Bernat Batle i Maria Parera
+
+## PARTE 1. DATA SCIENCE
+
+### Pregunta 1
+
+A continuación, se clasifican las preguntas como descriptiva,
+exploratoria, inferencial, predictiva o causal, con una breve
+justificación:
+
+### **1.1. Vehículos en una autopista**
+
 **Clasificación:** Esta pregunta se clasifica como "descriptiva".
-**Justificación:** En la pregunta se lleva a cabo el análisis de las características básicas del conjunto de datos, como la cantidad total, frecuencias y países más comunes. Es un análisis que simplemente describe los datos existentes sin buscar relaciones complejas.
 
----
+**Justificación:** En la pregunta se lleva a cabo el análisis de las
+características básicas del conjunto de datos, como la cantidad total,
+frecuencias y países más comunes. Es un análisis que simplemente
+describe los datos existentes sin buscar relaciones complejas.
 
-### **2. Preferencias de género literario según rango de edad**
+------------------------------------------------------------------------
+
+### **1.2. Preferencias de género literario según rango de edad**
+
 **Clasificación:** Esta pregunta se clasifica como "exploratoria".
-**Justificación:** La pregunta en cuestión busca encontrar relaciones entre variables (género de película y rango de edad). Es una pregunta que explora patrones y tendencias en los datos.
 
----
+**Justificación:** La pregunta en cuestión busca encontrar relaciones
+entre variables (género de película y rango de edad). Es una pregunta
+que explora patrones y tendencias en los datos.
 
-### **3. Peticiones incorrectas de una red de telefonía**
-**Clasificación:** Esta pregunta se clasifica como "predictiva".  
-**Justificación:** El objetivo de esta pregunta pretende predecir si las peticiones futuras de una red específica seguirán siendo problemáticas, basándose en un patrón observado en el pasado.
+------------------------------------------------------------------------
 
----
+### **1.3. Peticiones incorrectas de una red de telefonía**
 
-### **4. Agrupación de usuarios por historial de compras**
 **Clasificación:** Esta pregunta se clasifica como "predictiva".
-**Justificación:** La pregunta en cuestión trata de clasificar usuarios en grupos basándose en su historial de compras, lo que implica un modelo predictivo de asignación.
 
----
+**Justificación:** El objetivo de esta pregunta pretende predecir si las
+peticiones futuras de una red específica seguirán siendo problemáticas,
+basándose en un patrón observado en el pasado.
 
-## Conclusión
-En esta sección hemos clasificado cada pregunta en su categoría correspondiente y explicado brevemente la razón de cada clasificación.
+------------------------------------------------------------------------
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### **1.4. Agrupación de usuarios por historial de compras**
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+**Clasificación:** Esta pregunta se clasifica como "predictiva".
 
-```{r cars}
-summary(cars)
-```
+**Justificación:** La pregunta en cuestión trata de clasificar usuarios
+en grupos basándose en su historial de compras, lo que implica un modelo
+predictivo de asignación.
+
+------------------------------------------------------------------------
+
+### Pregunta 2
+
+Para resolver el escenario que se plantea en la pregunta 2, llevaremos a
+cabo el análisis con metodología Data Sciencie,analizando aspectos
+relacionados con la obtención de los datos, el tratamiento que deberían
+recibir los mismos, las preguntas clave, los datos y gráficos que se
+obtendrían y la manera de comunicarlos
+
+### 2.1. Obtención de los datos
+
+Con el objetivo de resolver el problema, en primer lugar, es necesario
+recopilar los datos necesarios de las fuentes específicas. Estos datos
+se recogerán de los registros de conexiones TCP de cada máquina de la
+red empresarial. Estos registros contendrán la siguiente información:
+
+-   Dirección IP origen (PC del trabajador).
+
+-   Dirección IP destino (servidor o destino conectado).
+
+-   Puertos abiertos y protocolos utilizados.
+
+-   Timestamp (fecha y hora de las conexiones).
+
+Fuentes para la recogida de estos datos:
+
+-   Logs de conexiones TCP desde firewall o sistema IDS/IPS de la red.
+
+-   Registros generados por herramientas de monitorización.
+
+-   Archivos de logs centralizados en servidores de administración.
+
+### 2.2. Tratamiento de los datos
+
+Una vez se han recopilado los datos necesarios, y, siguiendo la
+metodología Data Science, los datos deben ser tratados. Esta parte es
+importante para limpiarlos y preparlos para el análisis.
+
+-   En primer lugar, es necesario cargar y limpiar los datos.
+    Empezaremos cargando los registros TCP en un entorno de análisis (R,
+    por ejemplo). Eliminaremos duplicados y registros incompletos. A
+    continuación, filtraremos las conexiones externas (fuera de la red
+    empresarial) y temporales no autorizadas.
+
+-   En segundo lugar, y, siguiendo con el tratamiento de los datos,
+    llevaremos a cabo la transformación y estructuración. Crearemos una
+    tabla con las siguientes columnas: origen, destino, puerto,
+    protocolo y timpestamp. Normalizaremos las direcciones IP y
+    agruparemos las conexiones por máquina (IP origen). Finalmente,
+    identificaremos puertos sospechosos (puertos no estándar abiertos).
+
+-   En último lugar, realizaremos un filtrado adicional para excluir
+    conexiones legítimas con IPs y puertos conocidos de clientes
+    autorizados. Compararemos la actividad temporal de los trabajadores
+    con horarios laborales.
+
+### 2.3. Preguntas clave a resolver
+
+A continuación, para seguir con la resolución del caso planteado, es
+necesario definir las preguntas clave que deberemos hacernos para
+resolver el problema.
+
+Con la finalidad de reducir la lista de posibles culpables, es
+primordial responder a las siguientes preguntas:
+
+-   ¿Qué máquinas realizaron conexiones a servicios externos inusuales
+    (IPs desconocidas o sospechosas)?
+
+-   ¿En qué momentos se realizaron estas conexiones? (¿fuera del horario
+    laboral?)
+
+-   ¿Qué puertos estaban abiertos en estas máquinas durante el tiempo de
+    la actividad?
+
+-   ¿Existen patrones de conexión específicos que diferencien la
+    actividad sospechosa?
+
+-   ¿Qué trabajadores tienen registros de conexiones a servicios no
+    autorizados repetidamente?
+
+### 2.4. Análisis de los datos
 
 ## Including Plots
 
@@ -61,4 +157,5 @@ You can also embed plots, for example:
 plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Note that the `echo = FALSE` parameter was added to the code chunk to
+prevent printing of the R code that generated the plot.
