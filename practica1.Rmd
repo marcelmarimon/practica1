@@ -1,29 +1,138 @@
 ---
-title: "practica1"
+title: "Pràctica 1"
+author: "Marcel Marimon, Maria Parera i Bernat Batle"
 output: html_document
 date: "2024-12-16"
 ---
 
+# Pregunta 1 :
+
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+#Load libraries
+library(readr)     
+library(stringr)   
+library(dplyr)    
+library(lubridate)
+
+
+# Cargar el archivo CSV
+dataset <- read_delim("epa-http.csv", delim = " ", 
+                      col_names = c("IP", "Timestamp", "Request", "Code", "Bytes"))
 ```
 
-## R Markdown
+#### 1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+dim(dataset)
 
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
+#### 2. Valor medio de la columna Byte
+```{r warning=FALSE}
 
-You can also embed plots, for example:
+# Convertir Bytes a numérico (para manejar posibles NAs)
+dataset$Bytes <- as.numeric(dataset$Bytes )
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# Calcular el valor medio ignorando NAs
+mean_bytes <- mean(dataset$Bytes, na.rm = TRUE)
+mean_bytes
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Pregunta 2
+#### De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
+```{r}
+# Filtramos las IPs que contengan ".edu"
+edu_ips <- dataset %>%
+  filter(str_detect(IP, "\\.edu"))
+
+# Contamos el número de IPs educativas únicas
+n_edu_ips <- n_distinct(edu_ips$IP)
+n_edu_ips
+
+```
+# Pregunta 3
+#### De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+```{r}
+# Eliminar corchetes de la columna Timestamp
+dataset <- dataset %>%
+  mutate(Timestamp = str_remove_all(Timestamp, "\\[|\\]"))
+
+# Extraer el componente "HH" (horas) usando str_split y acceso por índice
+dataset <- dataset %>%
+  mutate(Hour = as.numeric(str_split(Timestamp, ":", simplify = TRUE)[,2]))
+
+# Revisar si las horas se han extraído correctamente
+head(dataset$Hour)
+# Filtrar solo las peticiones de tipo "GET"
+get_requests <- dataset %>%
+  filter(str_detect(Request, "^GET"))
+
+# Contar las peticiones por hora
+hourly_counts <- get_requests %>%
+  group_by(Hour) %>%
+  summarise(Count = n()) %>%
+  arrange(desc(Count))
+
+# Mostrar la hora con mayor número de peticiones
+top_hour <- hourly_counts[1, ]
+print(top_hour)
+
+
+```
+# Pregunta 4
+#### De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
+```{r}
+# Dividir la columna Request en Tipo, URL y Protocolo
+dataset <- dataset %>%
+  mutate(Request_Parts = str_split(Request, " ", simplify = TRUE)) %>%
+  mutate(Type = Request_Parts[,1], 
+         URL = Request_Parts[,2],
+         Protocol = Request_Parts[,3])
+
+# Filtrar peticiones con archivos ".txt" que contengan ".edu" en la IP
+edu_txt_requests <- dataset %>%
+  filter(str_detect(IP, "\\.edu") & str_detect(URL, "\\.txt"))
+
+# Verificar si hay registros encontrados
+print(nrow(edu_txt_requests))
+
+# Mostrar las primeras filas
+head(edu_txt_requests)
+
+
+```
+# Pregunta 5
+#### Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+```{r}
+# Separar la columna Request en Tipo, URL y Protocolo
+dataset <- dataset %>%
+  mutate(Request_Parts = str_split(Request, " ", simplify = TRUE)) %>%
+  mutate(Type = Request_Parts[,1],
+         URL = Request_Parts[,2],
+         Protocol = Request_Parts[,3])
+
+# Contar peticiones con URL = "/"
+root_requests <- dataset %>%
+  filter(URL == "/")
+
+n_root_requests <- nrow(root_requests)
+n_root_requests
+
+```
+# Pregunta 6
+#### Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo) ¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+```{r}
+# Contar peticiones cuyo Protocolo no es "HTTP/0.2"
+non_http02_requests <- dataset %>%
+  filter(Protocol != "HTTP/0.2")
+
+n_non_http02_requests <- nrow(non_http02_requests)
+n_non_http02_requests
+
+```
+
