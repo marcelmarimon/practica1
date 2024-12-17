@@ -1,29 +1,405 @@
 ---
-title: "practica1"
+title: "Pràctica 1 DATA DRIVEN SECURITY (UPC)"
+author: "Marcel Marimon, Maria Parera i Bernat Batle"
 output: html_document
 date: "2024-12-16"
 ---
+## PARTE 1. DATA SCIENCE
+
+### Pregunta 1
+
+A continuación, se clasifican las preguntas como descriptiva,
+exploratoria, inferencial, predictiva o causal, con una breve
+justificación:
+
+### **1.1. Vehículos en una autopista**
+
+**Clasificación:** Esta pregunta se clasifica como "descriptiva".
+
+**Justificación:** En la pregunta se lleva a cabo el análisis de las
+características básicas del conjunto de datos, como la cantidad total,
+frecuencias y países más comunes. Es un análisis que simplemente
+describe los datos existentes sin buscar relaciones complejas.
+
+------------------------------------------------------------------------
+
+### **1.2. Preferencias de género literario según rango de edad**
+
+**Clasificación:** Esta pregunta se clasifica como "exploratoria".
+
+**Justificación:** La pregunta en cuestión busca encontrar relaciones
+entre variables (género de película y rango de edad). Es una pregunta
+que explora patrones y tendencias en los datos.
+
+------------------------------------------------------------------------
+
+### **1.3. Peticiones incorrectas de una red de telefonía**
+
+**Clasificación:** Esta pregunta se clasifica como "predictiva".
+
+**Justificación:** El objetivo de esta pregunta pretende predecir si las
+peticiones futuras de una red específica seguirán siendo problemáticas,
+basándose en un patrón observado en el pasado.
+
+------------------------------------------------------------------------
+
+### **1.4. Agrupación de usuarios por historial de compras**
+
+**Clasificación:** Esta pregunta se clasifica como "predictiva".
+
+**Justificación:** La pregunta en cuestión trata de clasificar usuarios
+en grupos basándose en su historial de compras, lo que implica un modelo
+predictivo de asignación.
+
+------------------------------------------------------------------------
+
+### Pregunta 2
+
+Para resolver el escenario que se plantea en la pregunta 2, llevaremos a
+cabo el análisis con metodología Data Sciencie,analizando aspectos
+relacionados con la obtención de los datos, el tratamiento que deberían
+recibir los mismos, las preguntas clave, los datos y gráficos que se
+obtendrían y la manera de comunicarlos
+
+### **2.1. Obtención de los datos**
+
+Con el objetivo de resolver el problema, en primer lugar, es necesario
+recopilar los datos necesarios de las fuentes específicas. Estos datos
+se recogerán de los registros de conexiones TCP de cada máquina de la
+red empresarial. Estos registros contendrán la siguiente información:
+
+-   Dirección IP origen (PC del trabajador).
+
+-   Dirección IP destino (servidor o destino conectado).
+
+-   Puertos abiertos y protocolos utilizados.
+
+-   Timestamp (fecha y hora de las conexiones).
+
+Fuentes para la recogida de estos datos:
+
+-   Logs de conexiones TCP desde firewall o sistema IDS/IPS de la red.
+
+-   Registros generados por herramientas de monitorización.
+
+-   Archivos de logs centralizados en servidores de administración.
+
+------------------------------------------------------------------------
+
+### **2.2. Tratamiento de los datos**
+
+Una vez se han recopilado los datos necesarios, y, siguiendo la
+metodología Data Science, los datos deben ser tratados. Esta parte es
+importante para limpiarlos y preparlos para el análisis.
+
+-   En primer lugar, es necesario cargar y limpiar los datos.
+    Empezaremos cargando los registros TCP en un entorno de análisis (R,
+    por ejemplo). Eliminaremos duplicados y registros incompletos. A
+    continuación, filtraremos las conexiones externas (fuera de la red
+    empresarial) y temporales no autorizadas.
+
+-   En segundo lugar, y, siguiendo con el tratamiento de los datos,
+    llevaremos a cabo la transformación y estructuración. Crearemos una
+    tabla con las siguientes columnas: origen, destino, puerto,
+    protocolo y timpestamp. Normalizaremos las direcciones IP y
+    agruparemos las conexiones por máquina (IP origen). Finalmente,
+    identificaremos puertos sospechosos (puertos no estándar abiertos).
+
+-   En último lugar, realizaremos un filtrado adicional para excluir
+    conexiones legítimas con IPs y puertos conocidos de clientes
+    autorizados. Compararemos la actividad temporal de los trabajadores
+    con horarios laborales.
+
+------------------------------------------------------------------------
+
+### **2.3. Preguntas clave a resolver**
+
+A continuación, para seguir con la resolución del caso planteado, es
+necesario definir las preguntas clave que deberemos hacernos para
+resolver el problema.
+
+Con la finalidad de reducir la lista de posibles culpables, es
+primordial responder a las siguientes preguntas:
+
+-   ¿Qué máquinas realizaron conexiones a servicios externos inusuales
+    (IPs desconocidas o sospechosas)?
+
+-   ¿En qué momentos se realizaron estas conexiones? (¿fuera del horario
+    laboral?)
+
+-   ¿Qué puertos estaban abiertos en estas máquinas durante el tiempo de
+    la actividad?
+
+-   ¿Existen patrones de conexión específicos que diferencien la
+    actividad sospechosa?
+
+-   ¿Qué trabajadores tienen registros de conexiones a servicios no
+    autorizados repetidamente?
+
+------------------------------------------------------------------------
+
+### **2.4. Análisis de los datos**
+
+Una vez que los datos han sido tratados y organizados, realizamos el análisis para identificar conexiones sospechosas y así responder a las preguntas clave identificadas. 
+El proceso incluye los siguientes pasos:
+
+#### **-   Identificación de IPs destino sospechosas:**
+
+Cruzamos las IPs destino con una lista blanca de clientes autorizados y servicios internos.
+IPs que no coincidan con esta lista serán clasificadas como sospechosas.
+Ejemplo en pseudocódigo:
+
+```{r eval=FALSE}
+conexiones_sospechosas <- dataset %>%
+  filter(!IP_destino %in% lista_blanqueada)
+```
+
+#### **-   Detección de puertos no estándar:**
+
+Realizamos un análisis de los puertos utilizados. Los puertos no estándar son aquellos que no corresponden a servicios legítimos (por ejemplo, HTTP: 80, HTTPS: 443).
+Graficamos los puertos más utilizados: (Ejemplo)
+
+```{r eval=FALSE}
+library(ggplot2)
+
+dataset %>%
+  count(Puerto) %>%
+  ggplot(aes(x = reorder(Puerto, -n), y = n)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Puertos más utilizados", x = "Puerto", y = "Número de conexiones") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+#### **-    Análisis temporal de conexiones:**
+
+Detectamos si las conexiones sospechosas ocurrieron fuera del horario laboral.
+Filtramos y graficamos las conexiones según el timestamp. (Ejemplo)
+
+```{r eval=FALSE}
+dataset %>%
+  mutate(Hora = hour(parse_date_time(Timestamp, "%H:%M:%S"))) %>%
+  filter(Hora < 8 | Hora > 18) %>% # Fuera de horario laboral
+  count(Hora) %>%
+  ggplot(aes(x = Hora, y = n)) +
+  geom_line() +
+  labs(title = "Conexiones fuera del horario laboral", x = "Hora", y = "Número de conexiones")
+```
+
+#### **-    Agrupación por máquina (IP origen):**
+
+Agrupamos las conexiones por IP origen para identificar qué máquinas tienen más conexiones sospechosas.
+Contamos cuántas veces cada máquina accedió a IPs o puertos no autorizados.
+
+```{r eval=FALSE}
+resumen_sospechosos <- dataset %>%
+  group_by(IP_origen) %>%
+  summarise(Conexiones_sospechosas = n(),
+            Puertos_no_estandar = sum(!Puerto %in% c(80, 443))) %>%
+  arrange(desc(Conexiones_sospechosas))
+```
+
+#### **-    Identificación de patrones repetitivos:**
+
+Analizamos si hay patrones temporales o de frecuencia en las conexiones.
+Por ejemplo, conexiones recurrentes a la misma IP o puerto durante días consecutivos.
+ 
+------------------------------------------------------------------------
+
+### **2.5. Resultados y gráficos obtenidos**
+
+Tras el análisis, los resultados clave son:
+
+#### **-    Lista de IPs origen sospechosas: (Tabla)**
+Una tabla con las máquinas que realizaron conexiones a IPs desconocidas o fuera de horario.
+
+#### **-    Puertos no estándar abiertos:(Gáfico de barras)**
+Gráfico de barras mostrando los puertos más utilizados y resaltando aquellos sospechosos.
+
+#### **-    Análisis temporal:(Grafico de líneas)**
+Gráfico de líneas mostrando la distribución de conexiones fuera del horario laboral.
+
+#### **-Resumen de máquinas sospechosas:(Tabla summary)**
+Incluye:
+IP origen
+Número de conexiones sospechosas
+Número de puertos no estándar utilizados
+
+------------------------------------------------------------------------
+
+### **2.6. Comunicación de los resultados**
+
+Para comunicar los hallazgos a los responsables, se presentarán los resultados se presentarán con un report que incluye:
+
+##### **Informe ejecutivo:**
+
+Resumen de las actividades sospechosas detectadas.
+Tabla con las máquinas (IPs origen) involucradas y evidencias de conexiones no autorizadas.
+Visualizaciones:
+
+Gráfico de puertos no estándar utilizados.
+Gráfico temporal de conexiones fuera del horario laboral.
+Listado de IPs destino sospechosas con un análisis de frecuencia.
+
+##### **Posibles recomendaciones:**
+
+Realizar bloqueos automáticos de IPs no autorizadas.
+Implementar un sistema de alertas tempranas para conexiones a puertos no estándar.
+Monitorizar el comportamiento de los trabajadores en la red en tiempo real.
+Sensibilizar a los empleados sobre las políticas de uso de la red empresarial.
+
+
+
+## PARTE 2. INTRODUCCIÓN A R
+
+### Pregunta 1:
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+#Load libraries
+library(readr)     
+library(stringr)   
+library(dplyr)    
+library(lubridate)
+
+
+# Cargar el archivo CSV
+dataset <- read_delim("epa-http.csv", delim = " ", 
+                      col_names = c("IP", "Timestamp", "Request", "Code", "Bytes"))
 ```
 
-## R Markdown
+#### 1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+dim(dataset)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
+#### 2. Valor medio de la columna Byte
 
-You can also embed plots, for example:
+```{r warning=FALSE}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# Convertir Bytes a numérico (para manejar posibles NAs)
+dataset$Bytes <- as.numeric(dataset$Bytes )
+
+# Calcular el valor medio ignorando NAs
+mean_bytes <- mean(dataset$Bytes, na.rm = TRUE)
+mean_bytes
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+------------------------------------------------------------------------
+
+### Pregunta 2:
+
+#### De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
+```{r}
+# Filtramos las IPs que contengan ".edu"
+edu_ips <- dataset %>%
+  filter(str_detect(IP, "\\.edu"))
+
+# Contamos el número de IPs educativas únicas
+n_edu_ips <- n_distinct(edu_ips$IP)
+n_edu_ips
+
+```
+
+------------------------------------------------------------------------
+
+### Pregunta 3:
+
+#### De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+
+```{r}
+# Eliminar corchetes de la columna Timestamp
+dataset <- dataset %>%
+  mutate(Timestamp = str_remove_all(Timestamp, "\\[|\\]"))
+
+# Extraer el componente "HH" (horas) usando str_split y acceso por índice
+dataset <- dataset %>%
+  mutate(Hour = as.numeric(str_split(Timestamp, ":", simplify = TRUE)[,2]))
+
+# Revisar si las horas se han extraído correctamente
+# head(dataset$Hour)
+# Filtrar solo las peticiones de tipo "GET"
+get_requests <- dataset %>%
+  filter(str_detect(Request, "^GET"))
+
+# Contar las peticiones por hora
+hourly_counts <- get_requests %>%
+  group_by(Hour) %>%
+  summarise(Count = n()) %>%
+  arrange(desc(Count))
+
+# Mostrar la hora con mayor número de peticiones
+top_hour <- hourly_counts[1, ]
+print(top_hour)
+
+
+```
+
+------------------------------------------------------------------------
+
+### Pregunta 4
+
+#### De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
+```{r}
+# Dividir la columna Request en Tipo, URL y Protocolo
+dataset <- dataset %>%
+  mutate(Request_Parts = str_split(Request, " ", simplify = TRUE)) %>%
+  mutate(Type = Request_Parts[,1], 
+         URL = Request_Parts[,2],
+         Protocol = Request_Parts[,3])
+
+# Filtrar peticiones con archivos ".txt" que contengan ".edu" en la IP
+edu_txt_requests <- dataset %>%
+  filter(str_detect(IP, "\\.edu") & str_detect(URL, "\\.txt"))
+
+# Verificar si hay registros encontrados
+print(nrow(edu_txt_requests))
+
+# Mostrar las primeras filas
+# head(edu_txt_requests)
+
+
+```
+
+------------------------------------------------------------------------
+
+### Pregunta 5
+
+#### Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+
+```{r}
+# Separar la columna Request en Tipo, URL y Protocolo
+dataset <- dataset %>%
+  mutate(Request_Parts = str_split(Request, " ", simplify = TRUE)) %>%
+  mutate(Type = Request_Parts[,1],
+         URL = Request_Parts[,2],
+         Protocol = Request_Parts[,3])
+
+# Contar peticiones con URL = "/"
+root_requests <- dataset %>%
+  filter(URL == "/")
+
+n_root_requests <- nrow(root_requests)
+n_root_requests
+
+```
+
+------------------------------------------------------------------------
+
+### Pregunta 6
+
+#### Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo) ¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+
+```{r}
+# Contar peticiones cuyo Protocolo no es "HTTP/0.2"
+non_http02_requests <- dataset %>%
+  filter(Protocol != "HTTP/0.2")
+
+n_non_http02_requests <- nrow(non_http02_requests)
+n_non_http02_requests
+
+```
+
