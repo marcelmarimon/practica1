@@ -13,7 +13,7 @@
 
 <meta name="date" content="2024-12-16" />
 
-<title>Pràctica 1</title>
+<title>Pràctica 1 DATA DRIVEN SECURITY (UPC)</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,15 +350,254 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Pràctica 1</h1>
+<h1 class="title toc-ignore">Pràctica 1 DATA DRIVEN SECURITY (UPC)</h1>
 <h4 class="author">Marcel Marimon, Maria Parera i Bernat Batle</h4>
 <h4 class="date">2024-12-16</h4>
 
 </div>
 
 
-<div id="pregunta-1" class="section level1">
-<h1>Pregunta 1 :</h1>
+<div id="parte-1.-data-science" class="section level2">
+<h2>PARTE 1. DATA SCIENCE</h2>
+<div id="pregunta-1" class="section level3">
+<h3>Pregunta 1</h3>
+<p>A continuación, se clasifican las preguntas como descriptiva,
+exploratoria, inferencial, predictiva o causal, con una breve
+justificación:</p>
+</div>
+<div id="vehículos-en-una-autopista" class="section level3">
+<h3><strong>1.1. Vehículos en una autopista</strong></h3>
+<p><strong>Clasificación:</strong> Esta pregunta se clasifica como
+“descriptiva”.</p>
+<p><strong>Justificación:</strong> En la pregunta se lleva a cabo el
+análisis de las características básicas del conjunto de datos, como la
+cantidad total, frecuencias y países más comunes. Es un análisis que
+simplemente describe los datos existentes sin buscar relaciones
+complejas.</p>
+<hr />
+</div>
+<div id="preferencias-de-género-literario-según-rango-de-edad" class="section level3">
+<h3><strong>1.2. Preferencias de género literario según rango de
+edad</strong></h3>
+<p><strong>Clasificación:</strong> Esta pregunta se clasifica como
+“exploratoria”.</p>
+<p><strong>Justificación:</strong> La pregunta en cuestión busca
+encontrar relaciones entre variables (género de película y rango de
+edad). Es una pregunta que explora patrones y tendencias en los
+datos.</p>
+<hr />
+</div>
+<div id="peticiones-incorrectas-de-una-red-de-telefonía" class="section level3">
+<h3><strong>1.3. Peticiones incorrectas de una red de
+telefonía</strong></h3>
+<p><strong>Clasificación:</strong> Esta pregunta se clasifica como
+“predictiva”.</p>
+<p><strong>Justificación:</strong> El objetivo de esta pregunta pretende
+predecir si las peticiones futuras de una red específica seguirán siendo
+problemáticas, basándose en un patrón observado en el pasado.</p>
+<hr />
+</div>
+<div id="agrupación-de-usuarios-por-historial-de-compras" class="section level3">
+<h3><strong>1.4. Agrupación de usuarios por historial de
+compras</strong></h3>
+<p><strong>Clasificación:</strong> Esta pregunta se clasifica como
+“predictiva”.</p>
+<p><strong>Justificación:</strong> La pregunta en cuestión trata de
+clasificar usuarios en grupos basándose en su historial de compras, lo
+que implica un modelo predictivo de asignación.</p>
+<hr />
+</div>
+<div id="pregunta-2" class="section level3">
+<h3>Pregunta 2</h3>
+<p>Para resolver el escenario que se plantea en la pregunta 2,
+llevaremos a cabo el análisis con metodología Data Sciencie,analizando
+aspectos relacionados con la obtención de los datos, el tratamiento que
+deberían recibir los mismos, las preguntas clave, los datos y gráficos
+que se obtendrían y la manera de comunicarlos</p>
+</div>
+<div id="obtención-de-los-datos" class="section level3">
+<h3><strong>2.1. Obtención de los datos</strong></h3>
+<p>Con el objetivo de resolver el problema, en primer lugar, es
+necesario recopilar los datos necesarios de las fuentes específicas.
+Estos datos se recogerán de los registros de conexiones TCP de cada
+máquina de la red empresarial. Estos registros contendrán la siguiente
+información:</p>
+<ul>
+<li><p>Dirección IP origen (PC del trabajador).</p></li>
+<li><p>Dirección IP destino (servidor o destino conectado).</p></li>
+<li><p>Puertos abiertos y protocolos utilizados.</p></li>
+<li><p>Timestamp (fecha y hora de las conexiones).</p></li>
+</ul>
+<p>Fuentes para la recogida de estos datos:</p>
+<ul>
+<li><p>Logs de conexiones TCP desde firewall o sistema IDS/IPS de la
+red.</p></li>
+<li><p>Registros generados por herramientas de monitorización.</p></li>
+<li><p>Archivos de logs centralizados en servidores de
+administración.</p></li>
+</ul>
+<hr />
+</div>
+<div id="tratamiento-de-los-datos" class="section level3">
+<h3><strong>2.2. Tratamiento de los datos</strong></h3>
+<p>Una vez se han recopilado los datos necesarios, y, siguiendo la
+metodología Data Science, los datos deben ser tratados. Esta parte es
+importante para limpiarlos y preparlos para el análisis.</p>
+<ul>
+<li><p>En primer lugar, es necesario cargar y limpiar los datos.
+Empezaremos cargando los registros TCP en un entorno de análisis (R, por
+ejemplo). Eliminaremos duplicados y registros incompletos. A
+continuación, filtraremos las conexiones externas (fuera de la red
+empresarial) y temporales no autorizadas.</p></li>
+<li><p>En segundo lugar, y, siguiendo con el tratamiento de los datos,
+llevaremos a cabo la transformación y estructuración. Crearemos una
+tabla con las siguientes columnas: origen, destino, puerto, protocolo y
+timpestamp. Normalizaremos las direcciones IP y agruparemos las
+conexiones por máquina (IP origen). Finalmente, identificaremos puertos
+sospechosos (puertos no estándar abiertos).</p></li>
+<li><p>En último lugar, realizaremos un filtrado adicional para excluir
+conexiones legítimas con IPs y puertos conocidos de clientes
+autorizados. Compararemos la actividad temporal de los trabajadores con
+horarios laborales.</p></li>
+</ul>
+<hr />
+</div>
+<div id="preguntas-clave-a-resolver" class="section level3">
+<h3><strong>2.3. Preguntas clave a resolver</strong></h3>
+<p>A continuación, para seguir con la resolución del caso planteado, es
+necesario definir las preguntas clave que deberemos hacernos para
+resolver el problema.</p>
+<p>Con la finalidad de reducir la lista de posibles culpables, es
+primordial responder a las siguientes preguntas:</p>
+<ul>
+<li><p>¿Qué máquinas realizaron conexiones a servicios externos
+inusuales (IPs desconocidas o sospechosas)?</p></li>
+<li><p>¿En qué momentos se realizaron estas conexiones? (¿fuera del
+horario laboral?)</p></li>
+<li><p>¿Qué puertos estaban abiertos en estas máquinas durante el tiempo
+de la actividad?</p></li>
+<li><p>¿Existen patrones de conexión específicos que diferencien la
+actividad sospechosa?</p></li>
+<li><p>¿Qué trabajadores tienen registros de conexiones a servicios no
+autorizados repetidamente?</p></li>
+</ul>
+<hr />
+</div>
+<div id="análisis-de-los-datos" class="section level3">
+<h3><strong>2.4. Análisis de los datos</strong></h3>
+<p>Una vez que los datos han sido tratados y organizados, realizamos el
+análisis para identificar conexiones sospechosas y así responder a las
+preguntas clave identificadas. El proceso incluye los siguientes
+pasos:</p>
+<div id="identificación-de-ips-destino-sospechosas" class="section level4">
+<h4><strong>- Identificación de IPs destino sospechosas:</strong></h4>
+<p>Cruzamos las IPs destino con una lista blanca de clientes autorizados
+y servicios internos. IPs que no coincidan con esta lista serán
+clasificadas como sospechosas. Ejemplo en pseudocódigo:</p>
+<pre class="r"><code>conexiones_sospechosas &lt;- dataset %&gt;%
+  filter(!IP_destino %in% lista_blanqueada)</code></pre>
+</div>
+<div id="detección-de-puertos-no-estándar" class="section level4">
+<h4><strong>- Detección de puertos no estándar:</strong></h4>
+<p>Realizamos un análisis de los puertos utilizados. Los puertos no
+estándar son aquellos que no corresponden a servicios legítimos (por
+ejemplo, HTTP: 80, HTTPS: 443). Graficamos los puertos más utilizados:
+(Ejemplo)</p>
+<pre class="r"><code>library(ggplot2)
+
+dataset %&gt;%
+  count(Puerto) %&gt;%
+  ggplot(aes(x = reorder(Puerto, -n), y = n)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(title = &quot;Puertos más utilizados&quot;, x = &quot;Puerto&quot;, y = &quot;Número de conexiones&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+</div>
+<div id="análisis-temporal-de-conexiones" class="section level4">
+<h4><strong>- Análisis temporal de conexiones:</strong></h4>
+<p>Detectamos si las conexiones sospechosas ocurrieron fuera del horario
+laboral. Filtramos y graficamos las conexiones según el timestamp.
+(Ejemplo)</p>
+<pre class="r"><code>dataset %&gt;%
+  mutate(Hora = hour(parse_date_time(Timestamp, &quot;%H:%M:%S&quot;))) %&gt;%
+  filter(Hora &lt; 8 | Hora &gt; 18) %&gt;% # Fuera de horario laboral
+  count(Hora) %&gt;%
+  ggplot(aes(x = Hora, y = n)) +
+  geom_line() +
+  labs(title = &quot;Conexiones fuera del horario laboral&quot;, x = &quot;Hora&quot;, y = &quot;Número de conexiones&quot;)</code></pre>
+</div>
+<div id="agrupación-por-máquina-ip-origen" class="section level4">
+<h4><strong>- Agrupación por máquina (IP origen):</strong></h4>
+<p>Agrupamos las conexiones por IP origen para identificar qué máquinas
+tienen más conexiones sospechosas. Contamos cuántas veces cada máquina
+accedió a IPs o puertos no autorizados.</p>
+<pre class="r"><code>resumen_sospechosos &lt;- dataset %&gt;%
+  group_by(IP_origen) %&gt;%
+  summarise(Conexiones_sospechosas = n(),
+            Puertos_no_estandar = sum(!Puerto %in% c(80, 443))) %&gt;%
+  arrange(desc(Conexiones_sospechosas))</code></pre>
+</div>
+<div id="identificación-de-patrones-repetitivos" class="section level4">
+<h4><strong>- Identificación de patrones repetitivos:</strong></h4>
+<p>Analizamos si hay patrones temporales o de frecuencia en las
+conexiones. Por ejemplo, conexiones recurrentes a la misma IP o puerto
+durante días consecutivos.</p>
+<hr />
+</div>
+</div>
+<div id="resultados-y-gráficos-obtenidos" class="section level3">
+<h3><strong>2.5. Resultados y gráficos obtenidos</strong></h3>
+<p>Tras el análisis, los resultados clave son:</p>
+<div id="lista-de-ips-origen-sospechosas-tabla" class="section level4">
+<h4><strong>- Lista de IPs origen sospechosas: (Tabla)</strong></h4>
+<p>Una tabla con las máquinas que realizaron conexiones a IPs
+desconocidas o fuera de horario.</p>
+</div>
+<div id="puertos-no-estándar-abiertosgáfico-de-barras" class="section level4">
+<h4><strong>- Puertos no estándar abiertos:(Gáfico de
+barras)</strong></h4>
+<p>Gráfico de barras mostrando los puertos más utilizados y resaltando
+aquellos sospechosos.</p>
+</div>
+<div id="análisis-temporalgrafico-de-líneas" class="section level4">
+<h4><strong>- Análisis temporal:(Grafico de líneas)</strong></h4>
+<p>Gráfico de líneas mostrando la distribución de conexiones fuera del
+horario laboral.</p>
+</div>
+<div id="resumen-de-máquinas-sospechosastabla-summary" class="section level4">
+<h4><strong>-Resumen de máquinas sospechosas:(Tabla
+summary)</strong></h4>
+<p>Incluye: IP origen Número de conexiones sospechosas Número de puertos
+no estándar utilizados</p>
+<hr />
+</div>
+</div>
+<div id="comunicación-de-los-resultados" class="section level3">
+<h3><strong>2.6. Comunicación de los resultados</strong></h3>
+<p>Para comunicar los hallazgos a los responsables, se presentarán los
+resultados se presentarán con un report que incluye:</p>
+<div id="informe-ejecutivo" class="section level5">
+<h5><strong>Informe ejecutivo:</strong></h5>
+<p>Resumen de las actividades sospechosas detectadas. Tabla con las
+máquinas (IPs origen) involucradas y evidencias de conexiones no
+autorizadas. Visualizaciones:</p>
+<p>Gráfico de puertos no estándar utilizados. Gráfico temporal de
+conexiones fuera del horario laboral. Listado de IPs destino sospechosas
+con un análisis de frecuencia.</p>
+</div>
+<div id="posibles-recomendaciones" class="section level5">
+<h5><strong>Posibles recomendaciones:</strong></h5>
+<p>Realizar bloqueos automáticos de IPs no autorizadas. Implementar un
+sistema de alertas tempranas para conexiones a puertos no estándar.
+Monitorizar el comportamiento de los trabajadores en la red en tiempo
+real. Sensibilizar a los empleados sobre las políticas de uso de la red
+empresarial.</p>
+</div>
+</div>
+</div>
+<div id="parte-2.-introducción-a-r" class="section level2">
+<h2>PARTE 2. INTRODUCCIÓN A R</h2>
+<div id="pregunta-1-1" class="section level3">
+<h3>Pregunta 1:</h3>
 <div id="cuales-son-las-dimensiones-del-dataset-cargado-número-de-filas-y-columnas" class="section level4">
 <h4>1. Cuales son las dimensiones del dataset cargado (número de filas y
 columnas)</h4>
@@ -374,10 +613,11 @@ dataset$Bytes &lt;- as.numeric(dataset$Bytes )
 mean_bytes &lt;- mean(dataset$Bytes, na.rm = TRUE)
 mean_bytes</code></pre>
 <pre><code>## [1] 7352.335</code></pre>
+<hr />
 </div>
 </div>
-<div id="pregunta-2" class="section level1">
-<h1>Pregunta 2</h1>
+<div id="pregunta-2-1" class="section level3">
+<h3>Pregunta 2:</h3>
 <div id="de-las-diferentes-ips-de-origen-accediendo-al-servidor-cuantas-pertenecen-a-una-ip-claramente-educativa-que-contenga-.edu" class="section level4">
 <h4>De las diferentes IPs de origen accediendo al servidor, ¿cuantas
 pertenecen a una IP claramente educativa (que contenga “.edu”)?</h4>
@@ -389,10 +629,11 @@ edu_ips &lt;- dataset %&gt;%
 n_edu_ips &lt;- n_distinct(edu_ips$IP)
 n_edu_ips</code></pre>
 <pre><code>## [1] 375</code></pre>
+<hr />
 </div>
 </div>
-<div id="pregunta-3" class="section level1">
-<h1>Pregunta 3</h1>
+<div id="pregunta-3" class="section level3">
+<h3>Pregunta 3:</h3>
 <div id="de-todas-las-peticiones-recibidas-por-el-servidor-cual-es-la-hora-en-la-que-hay-mayor-volumen-de-peticiones-http-de-tipo-get" class="section level4">
 <h4>De todas las peticiones recibidas por el servidor cual es la hora en
 la que hay mayor volumen de peticiones HTTP de tipo “GET”?</h4>
@@ -405,9 +646,8 @@ dataset &lt;- dataset %&gt;%
   mutate(Hour = as.numeric(str_split(Timestamp, &quot;:&quot;, simplify = TRUE)[,2]))
 
 # Revisar si las horas se han extraído correctamente
-head(dataset$Hour)</code></pre>
-<pre><code>## [1] 23 23 23 23 23 23</code></pre>
-<pre class="r"><code># Filtrar solo las peticiones de tipo &quot;GET&quot;
+# head(dataset$Hour)
+# Filtrar solo las peticiones de tipo &quot;GET&quot;
 get_requests &lt;- dataset %&gt;%
   filter(str_detect(Request, &quot;^GET&quot;))
 
@@ -424,10 +664,11 @@ print(top_hour)</code></pre>
 ##    Hour Count
 ##   &lt;dbl&gt; &lt;int&gt;
 ## 1    14  4546</code></pre>
+<hr />
 </div>
 </div>
-<div id="pregunta-4" class="section level1">
-<h1>Pregunta 4</h1>
+<div id="pregunta-4" class="section level3">
+<h3>Pregunta 4</h3>
 <div id="de-las-peticiones-hechas-por-instituciones-educativas-.edu-cuantos-bytes-en-total-se-han-transmitido-en-peticiones-de-descarga-de-ficheros-de-texto-.txt" class="section level4">
 <h4>De las peticiones hechas por instituciones educativas (.edu),
 ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de
@@ -447,21 +688,12 @@ edu_txt_requests &lt;- dataset %&gt;%
 print(nrow(edu_txt_requests))</code></pre>
 <pre><code>## [1] 211</code></pre>
 <pre class="r"><code># Mostrar las primeras filas
-head(edu_txt_requests)</code></pre>
-<pre><code>## # A tibble: 6 × 10
-##   IP           Timestamp Request  Code Bytes  Hour Request_Parts[,1] Type  URL  
-##   &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;
-## 1 dept59.ac-s… 30:00:39… GET /d…   200  4846     0 GET               GET   /doc…
-## 2 mac6100.hom… 30:00:51… GET /d…   200  3176     0 GET               GET   /doc…
-## 3 mac6100.hom… 30:00:52… GET /d…   200  2692     0 GET               GET   /doc…
-## 4 mac6100.hom… 30:00:53… GET /d…   200  3711     0 GET               GET   /doc…
-## 5 mac6100.hom… 30:00:54… GET /d…   200  3555     0 GET               GET   /doc…
-## 6 mac6100.hom… 30:00:59… GET /d…   200  6266     0 GET               GET   /doc…
-## # ℹ 2 more variables: Request_Parts[2:3] &lt;chr&gt;, Protocol &lt;chr&gt;</code></pre>
+# head(edu_txt_requests)</code></pre>
+<hr />
 </div>
 </div>
-<div id="pregunta-5" class="section level1">
-<h1>Pregunta 5</h1>
+<div id="pregunta-5" class="section level3">
+<h3>Pregunta 5</h3>
 <div id="si-separamos-la-petición-en-3-partes-tipo-url-protocolo-usando-str_split-y-el-separador-espacio-cuantas-peticiones-buscan-directamente-la-url" class="section level4">
 <h4>Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando
 str_split y el separador ” ” (espacio), ¿cuantas peticiones buscan
@@ -480,10 +712,11 @@ root_requests &lt;- dataset %&gt;%
 n_root_requests &lt;- nrow(root_requests)
 n_root_requests</code></pre>
 <pre><code>## [1] 2382</code></pre>
+<hr />
 </div>
 </div>
-<div id="pregunta-6" class="section level1">
-<h1>Pregunta 6</h1>
+<div id="pregunta-6" class="section level3">
+<h3>Pregunta 6</h3>
 <div id="aprovechando-que-hemos-separado-la-petición-en-3-partes-tipo-url-protocolo-cuantas-peticiones-no-tienen-como-protocolo-http0.2" class="section level4">
 <h4>Aprovechando que hemos separado la petición en 3 partes (Tipo, URL,
 Protocolo) ¿Cuantas peticiones NO tienen como protocolo “HTTP/0.2”?</h4>
@@ -494,6 +727,7 @@ non_http02_requests &lt;- dataset %&gt;%
 n_non_http02_requests &lt;- nrow(non_http02_requests)
 n_non_http02_requests</code></pre>
 <pre><code>## [1] 47747</code></pre>
+</div>
 </div>
 </div>
 
